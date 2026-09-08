@@ -1,0 +1,19 @@
+.services-page { background: var(--cream); min-height: 100vh; }
+.services-page .nav { background: var(--cream); }
+.services-page .nav .text-link { margin-left: auto; margin-right: 28px; }
+.services-intro { padding: 120px 11% 105px; background: #e1e6da; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12%; align-items: end; }
+.services-intro .eyebrow { grid-column: 1 / -1; }
+.services-intro h1 { grid-column: 1; }
+.services-intro > p:last-child { grid-column: 2; max-width: 385px; color: var(--muted); font-size: 14px; line-height: 1.75; margin: 0 0 4px; }
+.service-directory { padding: 20px 11% 125px; background: var(--paper); }
+.service-directory article { display: grid; grid-template-columns: 55px 1fr auto; gap: 15px; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--line); }
+.service-directory article > span { color: var(--clay); font-size: 11px; }
+.service-directory h2 { font-size: 30px; letter-spacing: -.035em; }
+.service-directory p { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 8px 0 0; max-width: 550px; }
+.service-directory .text-link { white-space: nowrap; }
+.services-cta { padding: 105px 11%; background: var(--green); color: #e8eee5; display: grid; grid-template-columns: 1fr 1fr; gap: 12%; align-items: end; }
+.services-cta h2 { color: var(--cream); }
+.services-cta > div:last-child > p { max-width: 350px; color: #cbd7c9; font-size: 13px; line-height: 1.7; margin: 0 0 28px; }
+.services-cta .eyebrow { color: #f0c1a8; }
+.services-cta .button { background: var(--clay); }
+@media (max-width: 760px) { .services-page .nav { padding: 0 7%; } .services-page .nav .text-link { margin-right: 0; font-size: 0; border: 0; } .services-page .nav .text-link::after { content: 'Home'; font-size: 12px; } .services-page .nav .button { display: none; } .services-intro { padding: 80px 7%; display: block; } .services-intro h1 { font-size: 65px; } .services-intro > p:last-child { margin-top: 32px; } .service-directory { padding: 10px 7% 80px; } .service-directory article { grid-template-columns: 35px 1fr; gap: 10px; align-items: start; } .service-directory h2 { font-size: 26px; } .service-directory .text-link { grid-column: 2; margin-top: 13px; } .services-cta { padding: 80px 7%; display: flex; flex-direction: column; align-items: start; gap: 35px; } }
