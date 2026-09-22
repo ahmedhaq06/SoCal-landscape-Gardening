@@ -359,6 +359,23 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+
+    const elements = document.querySelectorAll('.reveal-on-scroll')
+    elements.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [currentPath])
+
   // Filter projects
   const filteredProjects = PORTFOLIO_PROJECTS.filter(proj => {
     if (activeFilter === 'all') return true
@@ -849,7 +866,7 @@ export default function App() {
           </div>
 
           {/* 5. Signature Work / Portfolio Section */}
-          <section className="portfolio-section" id="work">
+          <section className="portfolio-section reveal-on-scroll" id="work">
             <div className="section-header">
               <div className="section-title-area">
                 <div className="eyebrow-badge">SELECTED WORK</div>
@@ -981,7 +998,7 @@ export default function App() {
           )}
 
           {/* 7. Services Section on Homepage (Featured 3 Categories + Dedicated Page Button) */}
-          <section className="services-section" id="services">
+          <section className="services-section reveal-on-scroll" id="services">
             <div className="services-wrapper">
               <div className="section-header">
                 <div className="section-title-area">
@@ -1034,7 +1051,7 @@ export default function App() {
           </section>
 
           {/* 8. Differentiator / Why Us Section */}
-          <section className="why-section" id="why-us">
+          <section className="why-section reveal-on-scroll" id="why-us">
             <div className="why-wrapper">
               <div className="why-header">
                 <div className="eyebrow-badge">WHY SOCAL LANDSCAPE</div>
@@ -1083,7 +1100,7 @@ export default function App() {
           </section>
 
           {/* 9. Process Section - Connected Circular Interactive Timeline */}
-          <section className="process-section" id="process">
+          <section className="process-section reveal-on-scroll" id="process">
             <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 48px auto' }}>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <div className="eyebrow-badge">OUR WORKFLOW</div>
@@ -1112,9 +1129,6 @@ export default function App() {
                     <div className="process-circle-badge">{step.num}</div>
                     <h3 className="process-step-title">{step.title}</h3>
                     <p className="process-step-details">{step.desc}</p>
-                    <div className="process-hover-hint">
-                      <span>{activeProcessStep === idx ? '● Active Step' : 'Hover for details →'}</span>
-                    </div>
                   </div>
                 ))}
               </div>
@@ -1122,7 +1136,7 @@ export default function App() {
           </section>
 
           {/* 10. Social Proof / Reviews Section */}
-          <section className="proof-section" id="reviews">
+          <section className="proof-section reveal-on-scroll" id="reviews">
             <div className="proof-wrapper">
               <div className="section-header">
                 <div className="section-title-area">
@@ -1161,7 +1175,7 @@ export default function App() {
           </section>
 
           {/* 11. About / Credibility Section */}
-          <section className="about-section" id="about">
+          <section className="about-section reveal-on-scroll" id="about">
             <div className="about-text">
               <div className="eyebrow-badge">ABOUT OUR STUDIO</div>
               <h2>Thoughtful care for the places where life happens.</h2>
@@ -1194,7 +1208,7 @@ export default function App() {
           </section>
 
           {/* 12. FAQ Section */}
-          <section className="faq-section" id="faq">
+          <section className="faq-section reveal-on-scroll" id="faq">
             <div style={{ textAlign: 'center' }}>
               <div className="eyebrow-badge">FREQUENTLY ASKED QUESTIONS</div>
               <h2 className="section-title">Everything you need to know.</h2>
@@ -1225,7 +1239,7 @@ export default function App() {
           </section>
 
           {/* 13. Final CTA & Interactive Project Estimate Form */}
-          <section className="estimate-section" id="estimate">
+          <section className="estimate-section reveal-on-scroll" id="estimate">
             <div className="estimate-wrapper">
               <div className="estimate-copy">
                 <div className="eyebrow-badge" style={{ background: 'rgba(212,163,89,0.2)', color: 'var(--gold)' }}>START YOUR PROJECT</div>
