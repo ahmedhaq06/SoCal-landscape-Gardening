@@ -1,6 +1,98 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+// Real client photo gallery catalog from assets/
+const GALLERY_ITEMS = [
+  {
+    id: 'main',
+    title: 'Main Property Transformation',
+    category: 'Garden & Hardscape',
+    categoryFilter: 'gardens',
+    image: '/gallery/main.jpeg',
+    desc: 'Lush residential property reset featuring organic lawn care, ornamental planting beds, and custom hardscape edges.'
+  },
+  {
+    id: 'unnamed',
+    title: 'Precision Lawn Maintenance & Edging',
+    category: 'Lawn & Turf Care',
+    categoryFilter: 'lawn',
+    image: '/gallery/unnamed.jpeg',
+    desc: 'Clean border edging, turf aeration, and ongoing lawn health care across Greater Los Angeles.'
+  },
+  {
+    id: 'unnamed1',
+    title: 'Tree & Shrub Sculpting',
+    category: 'Tree & Plant Pruning',
+    categoryFilter: 'gardens',
+    image: '/gallery/unnamed1.jpeg',
+    desc: 'Thoughtful pruning and health maintenance for mature shrubs, hedges, and trees.'
+  },
+  {
+    id: 'unnamed2',
+    title: 'Soil Enrichment & Bed Refresh',
+    category: 'Mulching & Planting',
+    categoryFilter: 'drought',
+    image: '/gallery/unnamed2.jpeg',
+    desc: 'Organic soil nourishment, flower bed cleanup, and seasonal planting refreshes.'
+  },
+  {
+    id: 'unnamed3',
+    title: 'Garden Walkway & Hardscape',
+    category: 'Hardscape & Pathways',
+    categoryFilter: 'hardscape',
+    image: '/gallery/unnamed3.jpeg',
+    desc: 'Custom stone pathways, flagstone steps, and structural landscaping around garden beds.'
+  },
+  {
+    id: 'unnamed4',
+    title: 'Drought-Tolerant Planting Bed',
+    category: 'Drought-Tolerant Design',
+    categoryFilter: 'drought',
+    image: '/gallery/unnamed4.jpeg',
+    desc: 'Climate-conscious SoCal plant selection with integrated drip irrigation lines.'
+  },
+  {
+    id: 'unnamed5',
+    title: 'Property Grounds Stewardship',
+    category: 'Commercial & HOA Care',
+    categoryFilter: 'lawn',
+    image: '/gallery/unnamed5.jpeg',
+    desc: 'Consistent grounds care for residential estates, storefronts, and commercial properties.'
+  },
+  {
+    id: 'unnamed6',
+    title: 'Lush Lawn & Hedge Sculpting',
+    category: 'Garden Care',
+    categoryFilter: 'gardens',
+    image: '/gallery/unnamed6.jpeg',
+    desc: 'Clean lines, hedge trimming, and manicured green spaces for Los Angeles homes.'
+  },
+  {
+    id: 'unnamed7',
+    title: 'Property Reset & Cleanout',
+    category: 'Trash & Property Cleanup',
+    categoryFilter: 'hardscape',
+    image: '/gallery/unnamed7.jpeg',
+    desc: 'Full garden overhaul and removal to return properties to a clean starting baseline.'
+  },
+  {
+    id: 'unnamed8',
+    title: 'Smart Irrigation & Hydration',
+    category: 'Irrigation & Water',
+    categoryFilter: 'drought',
+    image: '/gallery/unnamed8.jpeg',
+    desc: 'High-efficiency drip lines and water audits tailored for Southern California.'
+  },
+  {
+    id: 'unnamed9',
+    title: 'Custom Residential Garden Care',
+    category: 'Ongoing Maintenance',
+    categoryFilter: 'gardens',
+    image: '/gallery/unnamed9.jpeg',
+    desc: 'Scheduled garden maintenance, planting bed care, and property upkeep.'
+  }
+]
+
 // All 12 verified service offerings preserved from current business facts
 const ALL_SERVICES_CATALOG = [
   { id: 'garden-care', category: 'maintenance', title: 'Garden care', description: 'Recurring garden maintenance, planting bed care, seasonal refreshes, and cleanups.' },
@@ -160,10 +252,13 @@ const FAQS = [
 ]
 
 export default function App() {
+  const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState('all')
+  const [galleryFilter, setGalleryFilter] = useState('all')
   const [selectedProject, setSelectedProject] = useState(null)
+  const [selectedGalleryImg, setSelectedGalleryImg] = useState(null)
   const [activeFaq, setActiveFaq] = useState(null)
   const [directorySearch, setDirectorySearch] = useState('')
   const [selectedServiceForForm, setSelectedServiceForForm] = useState('')
@@ -178,6 +273,21 @@ export default function App() {
     notes: ''
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
+
+  // Listen to path changes
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname)
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const navigateTo = (path) => {
+    window.history.pushState({}, '', path)
+    setCurrentPath(path)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   // Scroll handler for navbar glass effect
   useEffect(() => {
@@ -198,6 +308,12 @@ export default function App() {
     return proj.category === activeFilter
   })
 
+  // Filter gallery items
+  const filteredGalleryItems = GALLERY_ITEMS.filter(item => {
+    if (galleryFilter === 'all') return true
+    return item.categoryFilter === galleryFilter
+  })
+
   // Directory services filtered by search
   const filteredDirectoryServices = ALL_SERVICES_CATALOG.filter(service => 
     service.title.toLowerCase().includes(directorySearch.toLowerCase()) ||
@@ -210,6 +326,9 @@ export default function App() {
     const estimateElem = document.getElementById('estimate')
     if (estimateElem) {
       estimateElem.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      // scroll to estimate section if on services or gallery page
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
     }
   }
 
@@ -237,7 +356,7 @@ export default function App() {
 
       {/* 2. Sticky Glass Navbar */}
       <header className={`main-navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <a href="#top" className="brand-logo" aria-label="SoCal Landscape & Gardening Home">
+        <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="brand-logo" aria-label="SoCal Landscape & Gardening Home">
           <div className="brand-badge">SL<span>+</span></div>
           <div className="brand-text">
             <span>SoCal</span>
@@ -246,16 +365,17 @@ export default function App() {
         </a>
 
         <nav className="nav-links">
-          <a href="#work" className="nav-link">Work</a>
-          <a href="#services" className="nav-link">Services</a>
-          <a href="#why-us" className="nav-link">Why Us</a>
-          <a href="#process" className="nav-link">Process</a>
-          <a href="#reviews" className="nav-link">Reviews</a>
-          <a href="#faq" className="nav-link">FAQ</a>
+          <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className={`nav-link ${currentPath === '/' ? 'active' : ''}`}>Home</a>
+          <a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }} className={`nav-link ${currentPath === '/services' ? 'active' : ''}`}>Services</a>
+          <a href="/gallery" onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }} className={`nav-link ${currentPath === '/gallery' ? 'active' : ''}`}>Gallery</a>
+          <a href="/#work" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="nav-link">Work</a>
+          <a href="/#why-us" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="nav-link">Why Us</a>
+          <a href="/#process" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="nav-link">Process</a>
+          <a href="/#faq" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="nav-link">FAQ</a>
         </nav>
 
         <div className="nav-cta-group">
-          <a href="#estimate" className="btn-primary">
+          <a href="#estimate" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="btn-primary">
             <span>Start a Project</span>
             <span className="btn-arrow">→</span>
           </a>
@@ -274,250 +394,50 @@ export default function App() {
 
       {/* Mobile Drawer Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <a href="#work" onClick={() => setMobileMenuOpen(false)}>Work</a>
-        <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
-        <a href="#why-us" onClick={() => setMobileMenuOpen(false)}>Why Us</a>
-        <a href="#process" onClick={() => setMobileMenuOpen(false)}>Process</a>
-        <a href="#reviews" onClick={() => setMobileMenuOpen(false)}>Reviews</a>
-        <a href="#faq" onClick={() => setMobileMenuOpen(false)}>FAQ</a>
-        <a href="#estimate" onClick={() => setMobileMenuOpen(false)} className="btn-primary" style={{ textAlign: 'center', marginTop: '12px' }}>
+        <a href="/" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo('/') }}>Home</a>
+        <a href="/services" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo('/services') }}>Services</a>
+        <a href="/gallery" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo('/gallery') }}>Gallery</a>
+        <a href="/#work" onClick={() => { setMobileMenuOpen(false); if (currentPath !== '/') navigateTo('/') }}>Work</a>
+        <a href="/#why-us" onClick={() => { setMobileMenuOpen(false); if (currentPath !== '/') navigateTo('/') }}>Why Us</a>
+        <a href="/#process" onClick={() => { setMobileMenuOpen(false); if (currentPath !== '/') navigateTo('/') }}>Process</a>
+        <a href="/#faq" onClick={() => { setMobileMenuOpen(false); if (currentPath !== '/') navigateTo('/') }}>FAQ</a>
+        <a href="#estimate" onClick={() => { setMobileMenuOpen(false); if (currentPath !== '/') navigateTo('/') }} className="btn-primary" style={{ textAlign: 'center', marginTop: '12px' }}>
           Start a Project →
         </a>
       </div>
 
-      <main id="top">
-        {/* 3. Hero Section */}
-        <section className="hero-section">
-          <div className="hero-content">
-            <div className="eyebrow-badge">
-              <span>●</span> SOUTHERN CALIFORNIA LANDSCAPE STUDIO
-            </div>
-            <h1 className="hero-title">
-              Spaces that feel <br />
-              <em>alive.</em>
-            </h1>
-            <p className="hero-description">
-              Reliable garden care, drought-conscious design, and master outdoor craftsmanship for residential and commercial properties across Los Angeles.
-            </p>
-            <div className="hero-actions">
+      {currentPath === '/services' ? (
+        /* ==========================================================================
+           DEDICATED SERVICES PAGE VIEW (/services)
+           ========================================================================== */
+        <main className="services-page" style={{ paddingTop: '40px' }}>
+          <section className="gallery-hero">
+            <div className="gallery-nav-bar">
+              <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="back-link">
+                <span>←</span> Back to Home
+              </a>
               <a href="#estimate" className="btn-primary">
-                <span>Start a Project</span>
+                <span>Talk Through Your Project</span>
                 <span className="btn-arrow">→</span>
               </a>
-              <a href="#work" className="btn-secondary">
-                <span>View Our Work</span>
-                <span className="btn-arrow">↓</span>
-              </a>
             </div>
 
-            <div className="rating-badge">
-              <div className="rating-score">5.0</div>
-              <div>
-                <div className="rating-stars">★★★★★</div>
-                <div className="rating-text">92 Google Reviews · Verified LA Client Rating</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-visual">
-            <div className="hero-image-wrapper">
-              <img 
-                src="/projects/hillside.jpg" 
-                alt="Architectural modern hillside landscaping in Silver Lake Los Angeles" 
-              />
-            </div>
-            <div className="hero-location-pill">
-              <span>FEATURED PROJECT</span>
-              <b>Silver Lake Hillside Sanctuary</b>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Trust Bar / Metrics */}
-        <section className="trust-bar">
-          <div className="trust-grid">
-            <div className="trust-item">
-              <div className="trust-number">5.0 ★</div>
-              <div className="trust-label">92 Verified Google Reviews</div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-number">Greater LA</div>
-              <div className="trust-label">Silver Lake, Pasadena &amp; Surrounding Areas</div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-number">100%</div>
-              <div className="trust-label">Climate &amp; Drought-Resilient Expertise</div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-number">24 Hours</div>
-              <div className="trust-label">Guaranteed Estimate Response</div>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Signature Work / Portfolio Section */}
-        <section className="portfolio-section" id="work">
-          <div className="section-header">
-            <div className="section-title-area">
-              <div className="eyebrow-badge">SELECTED WORK</div>
-              <h2 className="section-title">Mastery in the wild.</h2>
-              <p className="section-sub">
-                Explore a selection of our residential garden resets, drought-tolerant landscapes, and hardscape transformations in Los Angeles.
-              </p>
-            </div>
-
-            <div className="filter-pills">
-              <button 
-                className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setActiveFilter('all')}
-              >
-                All Projects
-              </button>
-              <button 
-                className={`filter-btn ${activeFilter === 'drought' ? 'active' : ''}`}
-                onClick={() => setActiveFilter('drought')}
-              >
-                Drought-Tolerant
-              </button>
-              <button 
-                className={`filter-btn ${activeFilter === 'residential' ? 'active' : ''}`}
-                onClick={() => setActiveFilter('residential')}
-              >
-                Residential Care
-              </button>
-              <button 
-                className={`filter-btn ${activeFilter === 'hardscape' ? 'active' : ''}`}
-                onClick={() => setActiveFilter('hardscape')}
-              >
-                Hardscape &amp; Lighting
-              </button>
-            </div>
-          </div>
-
-          <div className="portfolio-grid">
-            {filteredProjects.map(project => (
-              <article 
-                key={project.id} 
-                className="project-card"
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="project-image-box">
-                  <img src={project.image} alt={project.title} />
-                  <span className="project-tag">{project.categoryLabel}</span>
-                </div>
-                <div className="project-body">
-                  <div>
-                    <div className="project-location">{project.location}</div>
-                    <h3 className="project-title">{project.title}</h3>
-                    <p className="project-desc">{project.shortDesc}</p>
-                  </div>
-                  <div className="project-action">
-                    <span>View Project Details</span>
-                    <span>→</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* 6. Project Lightbox Modal */}
-        {selectedProject && (
-          <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <button className="modal-close" onClick={() => setSelectedProject(null)}>✕</button>
-              <img src={selectedProject.image} alt={selectedProject.title} className="modal-hero-img" />
-              <div className="modal-body">
-                <div className="eyebrow-badge">{selectedProject.location}</div>
-                <h2 className="section-title">{selectedProject.title}</h2>
-                <p className="section-sub">{selectedProject.shortDesc}</p>
-
-                <div className="modal-grid">
-                  <div>
-                    <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', marginBottom: '8px', color: 'var(--cypress)' }}>
-                      Transformation Highlights
-                    </h4>
-                    <p style={{ color: 'var(--text-muted)', lineHeight: '1.65' }}>
-                      {selectedProject.specs.result}
-                    </p>
-                    <div style={{ marginTop: '24px' }}>
-                      <a 
-                        href="#estimate" 
-                        className="btn-primary"
-                        onClick={() => {
-                          setSelectedProject(null)
-                          handleServiceSelect(selectedProject.title)
-                        }}
-                      >
-                        Inquire About Similar Project →
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="modal-specs-list">
-                    <div className="spec-item">
-                      <b>Scope of Work</b>
-                      <span>{selectedProject.specs.scope}</span>
-                    </div>
-                    <div className="spec-item">
-                      <b>Execution Timeline</b>
-                      <span>{selectedProject.specs.timeline}</span>
-                    </div>
-                    <div className="spec-item">
-                      <b>Featured Flora &amp; Materials</b>
-                      <span>{selectedProject.specs.keyFlora}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 7. Services Section */}
-        <section className="services-section" id="services">
-          <div className="services-wrapper">
-            <div className="section-header">
+            <div className="section-header" style={{ marginBottom: '40px' }}>
               <div className="section-title-area">
-                <div className="eyebrow-badge">WHAT WE DO</div>
-                <h2 className="section-title">Care for every outdoor space.</h2>
+                <div className="eyebrow-badge">OUR COMPLETE SERVICES</div>
+                <h2 className="section-title">Care for every kind of outside.</h2>
                 <p className="section-sub">
-                  From recurring garden care to structural hardscapes, we bring precision and climate stewardship to every property.
+                  From regular garden care to larger landscape projects, our work is shaped around your property, your priorities, and the way you want to live in it.
                 </p>
               </div>
             </div>
 
-            {/* 3 Featured Service Categories */}
-            <div className="services-featured-grid">
-              {FEATURED_SERVICES.map(svc => (
-                <div className="service-featured-card" key={svc.num}>
-                  <div>
-                    <div className="service-num">{svc.num}</div>
-                    <h3 className="service-title">{svc.title}</h3>
-                    <p className="service-text">{svc.text}</p>
-                  </div>
-                  <div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
-                      {svc.subServices.map(sub => (
-                        <span key={sub} style={{ fontSize: '0.75rem', background: 'var(--bg-card)', padding: '4px 10px', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-light)', color: 'var(--cypress)', fontWeight: '600' }}>
-                          {sub}
-                        </span>
-                      ))}
-                    </div>
-                    <a href="#estimate" onClick={() => handleServiceSelect(svc.title)} className="btn-secondary" style={{ width: '100%' }}>
-                      Explore Service →
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Full Interactive Service Directory */}
-            <div className="services-directory-box">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+            {/* Complete Service Directory */}
+            <div className="services-directory-box" style={{ background: 'var(--bg-card)', padding: '40px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
                 <div>
-                  <h3 className="directory-title">Complete Service Directory</h3>
-                  <p className="directory-sub">Explore all 12 specialized services we offer across Greater Los Angeles.</p>
+                  <h3 className="directory-title">Searchable Service Directory</h3>
+                  <p className="directory-sub">Explore all 12 specialized services we provide across Greater Los Angeles.</p>
                 </div>
                 <input 
                   type="text" 
@@ -525,350 +445,851 @@ export default function App() {
                   value={directorySearch}
                   onChange={e => setDirectorySearch(e.target.value)}
                   style={{
-                    padding: '10px 16px',
+                    padding: '12px 20px',
                     borderRadius: 'var(--radius-full)',
                     border: '1px solid var(--border-light)',
-                    fontSize: '0.85rem',
+                    fontSize: '0.9rem',
                     outline: 'none',
-                    minWidth: '260px'
+                    minWidth: '280px',
+                    background: 'var(--bg-sand)'
                   }}
                 />
               </div>
 
               <div className="directory-grid">
                 {filteredDirectoryServices.map((service, index) => (
-                  <div key={service.id} className="directory-item">
+                  <div key={service.id} className="directory-item" style={{ background: 'var(--bg-sand)' }}>
                     <div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--clay)', fontWeight: '700', marginBottom: '4px' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--clay)', fontWeight: '700', marginBottom: '6px' }}>
                         SERVICE {String(index + 1).padStart(2, '0')}
                       </div>
-                      <h4>{service.title}</h4>
-                      <p>{service.description}</p>
+                      <h4 style={{ fontSize: '1.2rem', marginBottom: '8px' }}>{service.title}</h4>
+                      <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>{service.description}</p>
                     </div>
-                    <button onClick={() => handleServiceSelect(service.title)}>
+                    <button 
+                      onClick={() => handleServiceSelect(service.title)}
+                      style={{ marginTop: '20px', cursor: 'pointer' }}
+                    >
                       Discuss This Service <span>→</span>
                     </button>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* 8. Differentiator / Why Us Section */}
-        <section className="why-section" id="why-us">
-          <div className="why-wrapper">
-            <div className="why-header">
-              <div className="eyebrow-badge">WHY SOCAL LANDSCAPE</div>
-              <h2>
-                Built on precision, <br />
-                <em>driven by trust.</em>
-              </h2>
-              <p className="why-intro">
-                We believe outdoor spaces should make daily life easier and far more beautiful. Here is why homeowners and businesses across LA rely on our team.
-              </p>
-
-              <div style={{ marginTop: '32px' }}>
-                <a href="#estimate" className="btn-primary">
-                  <span>Start Your Project</span>
-                  <span className="btn-arrow">→</span>
-                </a>
+            {/* Consultation Banner */}
+            <div style={{
+              background: 'var(--cypress)',
+              color: '#ffffff',
+              borderRadius: 'var(--radius-lg)',
+              padding: '48px',
+              marginTop: '56px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '24px'
+            }}>
+              <div>
+                <div className="eyebrow-badge" style={{ background: 'rgba(212,163,89,0.2)', color: 'var(--gold)' }}>NOT SURE WHERE TO START?</div>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', margin: '8px 0' }}>Tell us what you&apos;re seeing.</h3>
+                <p style={{ color: 'var(--text-light-muted)', maxWidth: '560px', fontSize: '1rem', lineHeight: '1.65' }}>
+                  We can help you understand what your property needs now and what can wait. Share a few details and we&apos;ll point you in the right direction.
+                </p>
               </div>
+              <a href="#estimate" className="btn-primary" style={{ padding: '16px 32px' }}>
+                <span>Talk Through Your Project</span>
+                <span className="btn-arrow">→</span>
+              </a>
             </div>
+          </section>
 
-            <div className="differentiator-list">
-              <div className="diff-card">
-                <div className="diff-num">01</div>
-                <div className="diff-body">
-                  <h3>Careful by Nature</h3>
-                  <p>We notice the subtle details others miss—from exact pruning cuts to organic soil health and spotless site cleanup after every visit.</p>
-                </div>
-              </div>
+          {/* Estimate Form Section on Services Page */}
+          <section className="estimate-section" id="estimate" style={{ marginTop: '80px' }}>
+            <div className="estimate-wrapper">
+              <div className="estimate-copy">
+                <div className="eyebrow-badge" style={{ background: 'rgba(212,163,89,0.2)', color: 'var(--gold)' }}>START YOUR PROJECT</div>
+                <h2>
+                  Let&apos;s discuss your <br />
+                  <em>property.</em>
+                </h2>
+                <p>
+                  Share a few details about your service needs. We guarantee a thoughtful, no-pressure estimate within one business day.
+                </p>
 
-              <div className="diff-card">
-                <div className="diff-num">02</div>
-                <div className="diff-body">
-                  <h3>Built for the SoCal Climate</h3>
-                  <p>Plants and plans specifically chosen for Southern California weather, smart drip water conservation, and long-term climate resilience.</p>
-                </div>
-              </div>
-
-              <div className="diff-card">
-                <div className="diff-num">03</div>
-                <div className="diff-body">
-                  <h3>Transparent Communication</h3>
-                  <p>Scheduled visits, predictable billing, crew leads you recognize, and estimate turnarounds delivered within one business day.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Process Section */}
-        <section className="process-section" id="process">
-          <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 48px auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div className="eyebrow-badge">OUR WORKFLOW</div>
-            </div>
-            <h2 className="section-title">From first conversation to final delivery.</h2>
-            <p className="section-sub">A simple, transparent process designed to remove friction and keep you informed at every step.</p>
-          </div>
-
-          <div className="process-grid">
-            <div className="process-card">
-              <div className="process-step-badge">01</div>
-              <h3>Discover &amp; Walkthrough</h3>
-              <p>Share your property details or schedule an in-person site walk. We review your priorities, light exposure, soil, and drainage.</p>
-            </div>
-
-            <div className="process-card">
-              <div className="process-step-badge">02</div>
-              <h3>Tailored Proposal</h3>
-              <p>Receive a clear, transparent estimate within one business day with plant recommendations, scope details, and schedule.</p>
-            </div>
-
-            <div className="process-card">
-              <div className="process-step-badge">03</div>
-              <h3>Precision Execution</h3>
-              <p>Our experienced crew arrives on schedule to handle planting, irrigation, hardscaping, or pruning with minimal disruption.</p>
-            </div>
-
-            <div className="process-card">
-              <div className="process-step-badge">04</div>
-              <h3>Ongoing Care</h3>
-              <p>Enjoy your vibrant outdoor space with optional recurring garden care, seasonal refreshes, and proactive property maintenance.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. Social Proof / Reviews Section */}
-        <section className="proof-section" id="reviews">
-          <div className="proof-wrapper">
-            <div className="section-header">
-              <div className="section-title-area">
-                <div className="eyebrow-badge">VERIFIED REVIEWS</div>
-                <h2 className="section-title">Trusted across Los Angeles.</h2>
-                <p className="section-sub">Real experiences from homeowners and property directors who rely on SoCal Landscape &amp; Gardening.</p>
-              </div>
-
-              <div className="rating-badge" style={{ background: 'var(--bg-sand)' }}>
-                <div className="rating-score">5.0</div>
-                <div>
-                  <div className="rating-stars">★★★★★</div>
-                  <div className="rating-text">92 Google Reviews</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="reviews-grid">
-              {REVIEWS.map(rev => (
-                <div key={rev.id} className="review-card">
-                  <div>
-                    <div className="review-stars">★★★★★</div>
-                    <p className="review-quote">&ldquo;{rev.quote}&rdquo;</p>
+                <div className="direct-contacts">
+                  <div className="contact-link-row">
+                    <span>Direct Phone:</span>
+                    <a href="tel:+12135667469"><b>(213) 566-7469</b></a>
                   </div>
-                  <div className="review-author">
-                    <div className="author-avatar">{rev.author.charAt(0)}</div>
-                    <div className="author-info">
-                      <b>{rev.author}</b>
-                      <span>{rev.location} · {rev.project}</span>
+                  <div className="contact-link-row">
+                    <span>Direct Email:</span>
+                    <a href="mailto:info@socallg.com"><b>info@socallg.com</b></a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="estimate-form-card">
+                {formSubmitted ? (
+                  <div className="form-success-banner">
+                    <h4>Thank You!</h4>
+                    <p style={{ marginTop: '8px', fontSize: '0.95rem' }}>
+                      We have received your service request. A member of our team will get back to you within 1 business day.
+                    </p>
+                    <button className="btn-primary" onClick={() => setFormSubmitted(false)} style={{ marginTop: '20px' }}>
+                      Submit Another Request
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFormSubmit} className="form-grid">
+                    <div className="form-group">
+                      <label>Full Name *</label>
+                      <input 
+                        type="text" 
+                        className="form-input"
+                        placeholder="Your name" 
+                        required
+                        value={formData.name}
+                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                      />
                     </div>
+
+                    <div className="form-group">
+                      <label>Phone / WhatsApp *</label>
+                      <input 
+                        type="tel" 
+                        className="form-input"
+                        placeholder="(213) 000-0000" 
+                        required
+                        value={formData.phone}
+                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Email Address</label>
+                      <input 
+                        type="email" 
+                        className="form-input"
+                        placeholder="you@example.com" 
+                        value={formData.email}
+                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Service Needed</label>
+                      <select 
+                        className="form-select"
+                        value={formData.service || selectedServiceForForm}
+                        onChange={e => setFormData({ ...formData, service: e.target.value })}
+                      >
+                        <option value="">Select a service category...</option>
+                        {ALL_SERVICES_CATALOG.map(s => (
+                          <option key={s.id} value={s.title}>{s.title}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Property Notes</label>
+                      <textarea 
+                        className="form-textarea"
+                        placeholder="e.g. Garden maintenance, lawn edging, drip repairs..."
+                        value={formData.notes}
+                        onChange={e => setFormData({ ...formData, notes: e.target.value })}
+                      />
+                    </div>
+
+                    <button type="submit" className="btn-primary form-submit-btn">
+                      <span>Submit Estimate Request</span>
+                      <span className="btn-arrow">→</span>
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </section>
+        </main>
+      ) : currentPath === '/gallery' ? (
+        /* ==========================================================================
+           GALLERY PAGE VIEW (/gallery)
+           ========================================================================== */
+        <main className="gallery-page">
+          <section className="gallery-hero">
+            <div className="gallery-nav-bar">
+              <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="back-link">
+                <span>←</span> Back to Home
+              </a>
+              <div className="filter-pills">
+                <button 
+                  className={`filter-btn ${galleryFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setGalleryFilter('all')}
+                >
+                  All Photos ({GALLERY_ITEMS.length})
+                </button>
+                <button 
+                  className={`filter-btn ${galleryFilter === 'gardens' ? 'active' : ''}`}
+                  onClick={() => setGalleryFilter('gardens')}
+                >
+                  Garden Care
+                </button>
+                <button 
+                  className={`filter-btn ${galleryFilter === 'lawn' ? 'active' : ''}`}
+                  onClick={() => setGalleryFilter('lawn')}
+                >
+                  Lawn &amp; Turf
+                </button>
+                <button 
+                  className={`filter-btn ${galleryFilter === 'drought' ? 'active' : ''}`}
+                  onClick={() => setGalleryFilter('drought')}
+                >
+                  Drought &amp; Water
+                </button>
+                <button 
+                  className={`filter-btn ${galleryFilter === 'hardscape' ? 'active' : ''}`}
+                  onClick={() => setGalleryFilter('hardscape')}
+                >
+                  Hardscape
+                </button>
+              </div>
+            </div>
+
+            <div className="section-header" style={{ marginBottom: '32px' }}>
+              <div className="section-title-area">
+                <div className="eyebrow-badge">REAL PROJECT GALLERY</div>
+                <h2 className="section-title">Visual Proof of Quality</h2>
+                <p className="section-sub">
+                  Browse real photography from our garden maintenance, lawn edging, drought-tolerant landscaping, and hardscape projects in Los Angeles.
+                </p>
+              </div>
+            </div>
+
+            <div className="gallery-grid">
+              {filteredGalleryItems.map(item => (
+                <div 
+                  key={item.id} 
+                  className="gallery-card"
+                  onClick={() => setSelectedGalleryImg(item)}
+                >
+                  <img src={item.image} alt={item.title} />
+                  <div className="gallery-card-zoom">🔍</div>
+                  <div className="gallery-card-overlay">
+                    <span className="gallery-card-category">{item.category}</span>
+                    <h3 className="gallery-card-title">{item.title}</h3>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* 11. About / Credibility Section */}
-        <section className="about-section" id="about">
-          <div className="about-text">
-            <div className="eyebrow-badge">ABOUT OUR STUDIO</div>
-            <h2>Thoughtful care for the places where life happens.</h2>
-            <p>
-              SoCal Landscape &amp; Gardening was built on a simple premise: outdoor spaces should enhance daily life. Whether maintaining a quiet urban garden in Silver Lake or transforming an expansive residential grounds in Pasadena, we treat every property with respect and craftsmanship.
-            </p>
-            <p>
-              Our team combines deep knowledge of Southern California native flora with modern irrigation technology and reliable property stewardship.
-            </p>
-
-            <div className="about-contact-pills">
-              <a href="tel:+12135667469" className="about-pill">
-                <span>📞 Call (213) 566-7469</span>
-              </a>
-              <a href="mailto:info@socallg.com" className="about-pill">
-                <span>✉️ info@socallg.com</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="about-visual-card">
-            <h3>Los Angeles Native Expertise</h3>
-            <p style={{ marginBottom: '20px' }}>
-              We specialize in climate-conscious landscaping tailored to Southern California microclimates, soil conditions, and water guidelines.
-            </p>
-            <div style={{ fontSize: '0.85rem', color: 'var(--gold)', borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '16px' }}>
-              ✓ Residential Garden Care &nbsp; • &nbsp; ✓ Drought-Tolerant Design &nbsp; • &nbsp; ✓ Commercial &amp; HOA
-            </div>
-          </div>
-        </section>
-
-        {/* 12. FAQ Section */}
-        <section className="faq-section" id="faq">
-          <div style={{ textAlign: 'center' }}>
-            <div className="eyebrow-badge">FREQUENTLY ASKED QUESTIONS</div>
-            <h2 className="section-title">Everything you need to know.</h2>
-            <p className="section-sub">Clear answers regarding our service area, estimates, and property care process.</p>
-          </div>
-
-          <div className="faq-list">
-            {FAQS.map((faq, idx) => (
-              <div 
-                key={idx} 
-                className={`faq-item ${activeFaq === idx ? 'open' : ''}`}
-              >
-                <button 
-                  className="faq-question"
-                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                >
-                  <span>{faq.q}</span>
-                  <span className="faq-icon">+</span>
-                </button>
-                {activeFaq === idx && (
-                  <div className="faq-answer">
-                    <p>{faq.a}</p>
+            {/* Gallery Lightbox Modal */}
+            {selectedGalleryImg && (
+              <div className="modal-overlay" onClick={() => setSelectedGalleryImg(null)}>
+                <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+                  <button className="modal-close" onClick={() => setSelectedGalleryImg(null)}>✕</button>
+                  <img src={selectedGalleryImg.image} alt={selectedGalleryImg.title} className="gallery-modal-img" />
+                  <div className="modal-body">
+                    <div className="eyebrow-badge">{selectedGalleryImg.category}</div>
+                    <h2 className="section-title" style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{selectedGalleryImg.title}</h2>
+                    <p className="section-sub" style={{ fontSize: '1rem', marginBottom: '24px' }}>{selectedGalleryImg.desc}</p>
+                    
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                      <button 
+                        className="btn-primary"
+                        onClick={() => {
+                          setSelectedGalleryImg(null)
+                          handleServiceSelect(selectedGalleryImg.title)
+                        }}
+                      >
+                        Request Similar Property Care →
+                      </button>
+                      <button 
+                        className="btn-secondary"
+                        onClick={() => setSelectedGalleryImg(null)}
+                      >
+                        Close Preview
+                      </button>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
-            ))}
-          </div>
-        </section>
+            )}
+          </section>
+        </main>
+      ) : (
+        /* ==========================================================================
+           MAIN HOMEPAGE VIEW (/)
+           ========================================================================== */
+        <main id="top">
+          {/* 3. Hero Section using user's main.jpeg */}
+          <section className="hero-section">
+            <div className="hero-content">
+              <div className="eyebrow-badge">
+                <span>●</span> SOUTHERN CALIFORNIA LANDSCAPE STUDIO
+              </div>
+              <h1 className="hero-title">
+                Spaces that feel <br />
+                <em>alive.</em>
+              </h1>
+              <p className="hero-description">
+                Reliable garden care, drought-conscious design, and master outdoor craftsmanship for residential and commercial properties across Los Angeles.
+              </p>
+              <div className="hero-actions">
+                <a href="#estimate" className="btn-primary">
+                  <span>Start a Project</span>
+                  <span className="btn-arrow">→</span>
+                </a>
+                <a href="/gallery" onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }} className="btn-secondary">
+                  <span>View Photo Gallery</span>
+                  <span className="btn-arrow">→</span>
+                </a>
+              </div>
 
-        {/* 13. Final CTA & Interactive Project Estimate Form */}
-        <section className="estimate-section" id="estimate">
-          <div className="estimate-wrapper">
-            <div className="estimate-copy">
-              <div className="eyebrow-badge" style={{ background: 'rgba(212,163,89,0.2)', color: 'var(--gold)' }}>START YOUR PROJECT</div>
-              <h2>
-                Let&apos;s create something <br />
-                <em>exceptional.</em>
-              </h2>
+              <div className="rating-badge">
+                <div className="rating-score">5.0</div>
+                <div>
+                  <div className="rating-stars">★★★★★</div>
+                  <div className="rating-text">92 Google Reviews · Verified LA Client Rating</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="hero-visual">
+              <div className="hero-image-wrapper">
+                <img 
+                  src="/gallery/main.jpeg" 
+                  alt="SoCal Landscape & Gardening featured main property transformation in Los Angeles" 
+                />
+              </div>
+              <div className="hero-location-pill">
+                <span>FEATURED REAL PROJECT</span>
+                <b>SoCal Landscape &amp; Gardening Studio</b>
+              </div>
+            </div>
+          </section>
+
+          {/* 4. Trust Bar / Metrics */}
+          <section className="trust-bar">
+            <div className="trust-grid">
+              <div className="trust-item">
+                <div className="trust-number">5.0 ★</div>
+                <div className="trust-label">92 Verified Google Reviews</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">Greater LA</div>
+                <div className="trust-label">Silver Lake, Pasadena &amp; Surrounding Areas</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">100%</div>
+                <div className="trust-label">Climate &amp; Drought-Resilient Expertise</div>
+              </div>
+              <div className="trust-item">
+                <div className="trust-number">24 Hours</div>
+                <div className="trust-label">Guaranteed Estimate Response</div>
+              </div>
+            </div>
+          </section>
+
+          {/* 5. Signature Work / Portfolio Section */}
+          <section className="portfolio-section" id="work">
+            <div className="section-header">
+              <div className="section-title-area">
+                <div className="eyebrow-badge">SELECTED WORK</div>
+                <h2 className="section-title">Mastery in the wild.</h2>
+                <p className="section-sub">
+                  Explore a selection of our residential garden resets, drought-tolerant landscapes, and hardscape transformations in Los Angeles.
+                </p>
+              </div>
+
+              <div className="filter-pills">
+                <button 
+                  className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('all')}
+                >
+                  All Projects
+                </button>
+                <button 
+                  className={`filter-btn ${activeFilter === 'drought' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('drought')}
+                >
+                  Drought-Tolerant
+                </button>
+                <button 
+                  className={`filter-btn ${activeFilter === 'residential' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('residential')}
+                >
+                  Residential Care
+                </button>
+                <button 
+                  className={`filter-btn ${activeFilter === 'hardscape' ? 'active' : ''}`}
+                  onClick={() => setActiveFilter('hardscape')}
+                >
+                  Hardscape &amp; Lighting
+                </button>
+              </div>
+            </div>
+
+            <div className="portfolio-grid">
+              {filteredProjects.map(project => (
+                <article 
+                  key={project.id} 
+                  className="project-card"
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div className="project-image-box">
+                    <img src={project.image} alt={project.title} />
+                    <span className="project-tag">{project.categoryLabel}</span>
+                  </div>
+                  <div className="project-body">
+                    <div>
+                      <div className="project-location">{project.location}</div>
+                      <h3 className="project-title">{project.title}</h3>
+                      <p className="project-desc">{project.shortDesc}</p>
+                    </div>
+                    <div className="project-action">
+                      <span>View Project Details</span>
+                      <span>→</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Gallery Page CTA Link */}
+            <div style={{ textAlign: 'center', marginTop: '48px' }}>
+              <a 
+                href="/gallery" 
+                onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }}
+                className="btn-secondary"
+                style={{ padding: '16px 32px', fontSize: '0.95rem' }}
+              >
+                <span>View Full Photo Gallery (11 Real Photos)</span>
+                <span className="btn-arrow">→</span>
+              </a>
+            </div>
+          </section>
+
+          {/* 6. Project Lightbox Modal */}
+          {selectedProject && (
+            <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+              <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="modal-close" onClick={() => setSelectedProject(null)}>✕</button>
+                <img src={selectedProject.image} alt={selectedProject.title} className="modal-hero-img" />
+                <div className="modal-body">
+                  <div className="eyebrow-badge">{selectedProject.location}</div>
+                  <h2 className="section-title">{selectedProject.title}</h2>
+                  <p className="section-sub">{selectedProject.shortDesc}</p>
+
+                  <div className="modal-grid">
+                    <div>
+                      <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', marginBottom: '8px', color: 'var(--cypress)' }}>
+                        Transformation Highlights
+                      </h4>
+                      <p style={{ color: 'var(--text-muted)', lineHeight: '1.65' }}>
+                        {selectedProject.specs.result}
+                      </p>
+                      <div style={{ marginTop: '24px' }}>
+                        <a 
+                          href="#estimate" 
+                          className="btn-primary"
+                          onClick={() => {
+                            setSelectedProject(null)
+                            handleServiceSelect(selectedProject.title)
+                          }}
+                        >
+                          Inquire About Similar Project →
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="modal-specs-list">
+                      <div className="spec-item">
+                        <b>Scope of Work</b>
+                        <span>{selectedProject.specs.scope}</span>
+                      </div>
+                      <div className="spec-item">
+                        <b>Execution Timeline</b>
+                        <span>{selectedProject.specs.timeline}</span>
+                      </div>
+                      <div className="spec-item">
+                        <b>Featured Flora &amp; Materials</b>
+                        <span>{selectedProject.specs.keyFlora}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 7. Services Section on Homepage (Featured 3 Categories + Dedicated Page Button) */}
+          <section className="services-section" id="services">
+            <div className="services-wrapper">
+              <div className="section-header">
+                <div className="section-title-area">
+                  <div className="eyebrow-badge">WHAT WE DO</div>
+                  <h2 className="section-title">Care for every outdoor space.</h2>
+                  <p className="section-sub">
+                    From recurring garden care to structural hardscapes, we bring precision and climate stewardship to every property.
+                  </p>
+                </div>
+              </div>
+
+              {/* 3 Featured Service Categories */}
+              <div className="services-featured-grid">
+                {FEATURED_SERVICES.map(svc => (
+                  <div className="service-featured-card" key={svc.num}>
+                    <div>
+                      <div className="service-num">{svc.num}</div>
+                      <h3 className="service-title">{svc.title}</h3>
+                      <p className="service-text">{svc.text}</p>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+                        {svc.subServices.map(sub => (
+                          <span key={sub} style={{ fontSize: '0.75rem', background: 'var(--bg-card)', padding: '4px 10px', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-light)', color: 'var(--cypress)', fontWeight: '600' }}>
+                            {sub}
+                          </span>
+                        ))}
+                      </div>
+                      <a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }} className="btn-secondary" style={{ width: '100%' }}>
+                        Explore Service Details →
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Dedicated Services Page Banner Button */}
+              <div style={{ textAlign: 'center', marginTop: '36px' }}>
+                <a 
+                  href="/services" 
+                  onClick={(e) => { e.preventDefault(); navigateTo('/services') }}
+                  className="btn-primary"
+                  style={{ padding: '16px 36px', fontSize: '0.95rem' }}
+                >
+                  <span>Explore Full 12-Service Directory Page</span>
+                  <span className="btn-arrow">→</span>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* 8. Differentiator / Why Us Section */}
+          <section className="why-section" id="why-us">
+            <div className="why-wrapper">
+              <div className="why-header">
+                <div className="eyebrow-badge">WHY SOCAL LANDSCAPE</div>
+                <h2>
+                  Built on precision, <br />
+                  <em>driven by trust.</em>
+                </h2>
+                <p className="why-intro">
+                  We believe outdoor spaces should make daily life easier and far more beautiful. Here is why homeowners and businesses across LA rely on our team.
+                </p>
+
+                <div style={{ marginTop: '32px' }}>
+                  <a href="#estimate" className="btn-primary">
+                    <span>Start Your Project</span>
+                    <span className="btn-arrow">→</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="differentiator-list">
+                <div className="diff-card">
+                  <div className="diff-num">01</div>
+                  <div className="diff-body">
+                    <h3>Careful by Nature</h3>
+                    <p>We notice the subtle details others miss—from exact pruning cuts to organic soil health and spotless site cleanup after every visit.</p>
+                  </div>
+                </div>
+
+                <div className="diff-card">
+                  <div className="diff-num">02</div>
+                  <div className="diff-body">
+                    <h3>Built for the SoCal Climate</h3>
+                    <p>Plants and plans specifically chosen for Southern California weather, smart drip water conservation, and long-term climate resilience.</p>
+                  </div>
+                </div>
+
+                <div className="diff-card">
+                  <div className="diff-num">03</div>
+                  <div className="diff-body">
+                    <h3>Transparent Communication</h3>
+                    <p>Scheduled visits, predictable billing, crew leads you recognize, and estimate turnarounds delivered within one business day.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 9. Process Section */}
+          <section className="process-section" id="process">
+            <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 48px auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="eyebrow-badge">OUR WORKFLOW</div>
+              </div>
+              <h2 className="section-title">From first conversation to final delivery.</h2>
+              <p className="section-sub">A simple, transparent process designed to remove friction and keep you informed at every step.</p>
+            </div>
+
+            <div className="process-grid">
+              <div className="process-card">
+                <div className="process-step-badge">01</div>
+                <h3>Discover &amp; Walkthrough</h3>
+                <p>Share your property details or schedule an in-person site walk. We review your priorities, light exposure, soil, and drainage.</p>
+              </div>
+
+              <div className="process-card">
+                <div className="process-step-badge">02</div>
+                <h3>Tailored Proposal</h3>
+                <p>Receive a clear, transparent estimate within one business day with plant recommendations, scope details, and schedule.</p>
+              </div>
+
+              <div className="process-card">
+                <div className="process-step-badge">03</div>
+                <h3>Precision Execution</h3>
+                <p>Our experienced crew arrives on schedule to handle planting, irrigation, hardscaping, or pruning with minimal disruption.</p>
+              </div>
+
+              <div className="process-card">
+                <div className="process-step-badge">04</div>
+                <h3>Ongoing Care</h3>
+                <p>Enjoy your vibrant outdoor space with optional recurring garden care, seasonal refreshes, and proactive property maintenance.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* 10. Social Proof / Reviews Section */}
+          <section className="proof-section" id="reviews">
+            <div className="proof-wrapper">
+              <div className="section-header">
+                <div className="section-title-area">
+                  <div className="eyebrow-badge">VERIFIED REVIEWS</div>
+                  <h2 className="section-title">Trusted across Los Angeles.</h2>
+                  <p className="section-sub">Real experiences from homeowners and property directors who rely on SoCal Landscape &amp; Gardening.</p>
+                </div>
+
+                <div className="rating-badge" style={{ background: 'var(--bg-sand)' }}>
+                  <div className="rating-score">5.0</div>
+                  <div>
+                    <div className="rating-stars">★★★★★</div>
+                    <div className="rating-text">92 Google Reviews</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="reviews-grid">
+                {REVIEWS.map(rev => (
+                  <div key={rev.id} className="review-card">
+                    <div>
+                      <div className="review-stars">★★★★★</div>
+                      <p className="review-quote">&ldquo;{rev.quote}&rdquo;</p>
+                    </div>
+                    <div className="review-author">
+                      <div className="author-avatar">{rev.author.charAt(0)}</div>
+                      <div className="author-info">
+                        <b>{rev.author}</b>
+                        <span>{rev.location} · {rev.project}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 11. About / Credibility Section */}
+          <section className="about-section" id="about">
+            <div className="about-text">
+              <div className="eyebrow-badge">ABOUT OUR STUDIO</div>
+              <h2>Thoughtful care for the places where life happens.</h2>
               <p>
-                Share a few details about your property or vision. We guarantee a thoughtful, no-pressure estimate within one business day.
+                SoCal Landscape &amp; Gardening was built on a simple premise: outdoor spaces should enhance daily life. Whether maintaining a quiet urban garden in Silver Lake or transforming an expansive residential grounds in Pasadena, we treat every property with respect and craftsmanship.
+              </p>
+              <p>
+                Our team combines deep knowledge of Southern California native flora with modern irrigation technology and reliable property stewardship.
               </p>
 
-              <div className="direct-contacts">
-                <div className="contact-link-row">
-                  <span>Direct Phone:</span>
-                  <a href="tel:+12135667469"><b>(213) 566-7469</b></a>
-                </div>
-                <div className="contact-link-row">
-                  <span>Direct Email:</span>
-                  <a href="mailto:info@socallg.com"><b>info@socallg.com</b></a>
-                </div>
-                <div className="contact-link-row">
-                  <span>Service Region:</span>
-                  <b>Greater Los Angeles &amp; Surrounding Areas</b>
-                </div>
+              <div className="about-contact-pills">
+                <a href="tel:+12135667469" className="about-pill">
+                  <span>📞 Call (213) 566-7469</span>
+                </a>
+                <a href="mailto:info@socallg.com" className="about-pill">
+                  <span>✉️ info@socallg.com</span>
+                </a>
               </div>
             </div>
 
-            <div className="estimate-form-card">
-              {formSubmitted ? (
-                <div className="form-success-banner">
-                  <h4>Thank You!</h4>
-                  <p style={{ marginTop: '8px', fontSize: '0.95rem' }}>
-                    We have received your project details. A member of our team will review your request and get back to you within 1 business day.
-                  </p>
-                  <button 
-                    className="btn-primary" 
-                    onClick={() => setFormSubmitted(false)}
-                    style={{ marginTop: '20px' }}
-                  >
-                    Submit Another Request
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleFormSubmit} className="form-grid">
-                  <div className="form-group">
-                    <label>Full Name *</label>
-                    <input 
-                      type="text" 
-                      className="form-input"
-                      placeholder="Your name" 
-                      required
-                      value={formData.name}
-                      onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Phone / WhatsApp *</label>
-                    <input 
-                      type="tel" 
-                      className="form-input"
-                      placeholder="(213) 000-0000" 
-                      required
-                      value={formData.phone}
-                      onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="form-group full">
-                    <label>Email Address</label>
-                    <input 
-                      type="email" 
-                      className="form-input"
-                      placeholder="you@example.com" 
-                      value={formData.email}
-                      onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="form-group full">
-                    <label>Service Needed</label>
-                    <select 
-                      className="form-select"
-                      value={formData.service || selectedServiceForForm}
-                      onChange={e => setFormData({ ...formData, service: e.target.value })}
-                    >
-                      <option value="">Select a service category...</option>
-                      {ALL_SERVICES_CATALOG.map(s => (
-                        <option key={s.id} value={s.title}>{s.title}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-group full">
-                    <label>Property Location / Notes</label>
-                    <textarea 
-                      className="form-textarea"
-                      placeholder="e.g. Silver Lake residential property, garden care & drip system repair..."
-                      value={formData.notes}
-                      onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                    />
-                  </div>
-
-                  <button type="submit" className="btn-primary form-submit-btn">
-                    <span>Submit Estimate Request</span>
-                    <span className="btn-arrow">→</span>
-                  </button>
-
-                  <div className="form-note">
-                    🔒 We respect your privacy. Response guaranteed within 1 business day.
-                  </div>
-                </form>
-              )}
+            <div className="about-visual-card">
+              <h3>Los Angeles Native Expertise</h3>
+              <p style={{ marginBottom: '20px' }}>
+                We specialize in climate-conscious landscaping tailored to Southern California microclimates, soil conditions, and water guidelines.
+              </p>
+              <div style={{ fontSize: '0.85rem', color: 'var(--gold)', borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '16px' }}>
+                ✓ Residential Garden Care &nbsp; • &nbsp; ✓ Drought-Tolerant Design &nbsp; • &nbsp; ✓ Commercial &amp; HOA
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+
+          {/* 12. FAQ Section */}
+          <section className="faq-section" id="faq">
+            <div style={{ textAlign: 'center' }}>
+              <div className="eyebrow-badge">FREQUENTLY ASKED QUESTIONS</div>
+              <h2 className="section-title">Everything you need to know.</h2>
+              <p className="section-sub">Clear answers regarding our service area, estimates, and property care process.</p>
+            </div>
+
+            <div className="faq-list">
+              {FAQS.map((faq, idx) => (
+                <div 
+                  key={idx} 
+                  className={`faq-item ${activeFaq === idx ? 'open' : ''}`}
+                >
+                  <button 
+                    className="faq-question"
+                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                  >
+                    <span>{faq.q}</span>
+                    <span className="faq-icon">+</span>
+                  </button>
+                  {activeFaq === idx && (
+                    <div className="faq-answer">
+                      <p>{faq.a}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 13. Final CTA & Interactive Project Estimate Form */}
+          <section className="estimate-section" id="estimate">
+            <div className="estimate-wrapper">
+              <div className="estimate-copy">
+                <div className="eyebrow-badge" style={{ background: 'rgba(212,163,89,0.2)', color: 'var(--gold)' }}>START YOUR PROJECT</div>
+                <h2>
+                  Let&apos;s create something <br />
+                  <em>exceptional.</em>
+                </h2>
+                <p>
+                  Share a few details about your property or vision. We guarantee a thoughtful, no-pressure estimate within one business day.
+                </p>
+
+                <div className="direct-contacts">
+                  <div className="contact-link-row">
+                    <span>Direct Phone:</span>
+                    <a href="tel:+12135667469"><b>(213) 566-7469</b></a>
+                  </div>
+                  <div className="contact-link-row">
+                    <span>Direct Email:</span>
+                    <a href="mailto:info@socallg.com"><b>info@socallg.com</b></a>
+                  </div>
+                  <div className="contact-link-row">
+                    <span>Service Region:</span>
+                    <b>Greater Los Angeles &amp; Surrounding Areas</b>
+                  </div>
+                </div>
+              </div>
+
+              <div className="estimate-form-card">
+                {formSubmitted ? (
+                  <div className="form-success-banner">
+                    <h4>Thank You!</h4>
+                    <p style={{ marginTop: '8px', fontSize: '0.95rem' }}>
+                      We have received your project details. A member of our team will review your request and get back to you within 1 business day.
+                    </p>
+                    <button 
+                      className="btn-primary" 
+                      onClick={() => setFormSubmitted(false)}
+                      style={{ marginTop: '20px' }}
+                    >
+                      Submit Another Request
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFormSubmit} className="form-grid">
+                    <div className="form-group">
+                      <label>Full Name *</label>
+                      <input 
+                        type="text" 
+                        className="form-input"
+                        placeholder="Your name" 
+                        required
+                        value={formData.name}
+                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Phone / WhatsApp *</label>
+                      <input 
+                        type="tel" 
+                        className="form-input"
+                        placeholder="(213) 000-0000" 
+                        required
+                        value={formData.phone}
+                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Email Address</label>
+                      <input 
+                        type="email" 
+                        className="form-input"
+                        placeholder="you@example.com" 
+                        value={formData.email}
+                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Service Needed</label>
+                      <select 
+                        className="form-select"
+                        value={formData.service || selectedServiceForForm}
+                        onChange={e => setFormData({ ...formData, service: e.target.value })}
+                      >
+                        <option value="">Select a service category...</option>
+                        {ALL_SERVICES_CATALOG.map(s => (
+                          <option key={s.id} value={s.title}>{s.title}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="form-group full">
+                      <label>Property Location / Notes</label>
+                      <textarea 
+                        className="form-textarea"
+                        placeholder="e.g. Silver Lake residential property, garden care & drip system repair..."
+                        value={formData.notes}
+                        onChange={e => setFormData({ ...formData, notes: e.target.value })}
+                      />
+                    </div>
+
+                    <button type="submit" className="btn-primary form-submit-btn">
+                      <span>Submit Estimate Request</span>
+                      <span className="btn-arrow">→</span>
+                    </button>
+
+                    <div className="form-note">
+                      🔒 We respect your privacy. Response guaranteed within 1 business day.
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          </section>
+        </main>
+      )}
 
       {/* 14. Footer */}
       <footer className="main-footer">
         <div className="footer-wrapper">
           <div className="footer-brand">
-            <a href="#top" className="brand-logo" style={{ color: '#ffffff' }}>
+            <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="brand-logo" style={{ color: '#ffffff' }}>
               <div className="brand-badge">SL<span>+</span></div>
               <div className="brand-text">
                 <span style={{ color: 'var(--text-light-muted)' }}>SoCal</span>
@@ -883,24 +1304,26 @@ export default function App() {
           <div className="footer-col">
             <h4>Navigation</h4>
             <ul>
-              <li><a href="#work">Selected Work</a></li>
-              <li><a href="#services">Services Catalog</a></li>
-              <li><a href="#why-us">Why SoCal Landscape</a></li>
-              <li><a href="#process">Our Process</a></li>
-              <li><a href="#reviews">Verified Reviews</a></li>
-              <li><a href="#faq">FAQ</a></li>
+              <li><a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }}>Home Page</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Services Directory Page</a></li>
+              <li><a href="/gallery" onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }}>Real Project Gallery Page</a></li>
+              <li><a href="/#work" onClick={() => { if (currentPath !== '/') navigateTo('/') }}>Selected Work</a></li>
+              <li><a href="/#why-us" onClick={() => { if (currentPath !== '/') navigateTo('/') }}>Why SoCal Landscape</a></li>
+              <li><a href="/#process" onClick={() => { if (currentPath !== '/') navigateTo('/') }}>Our Process</a></li>
+              <li><a href="/#reviews" onClick={() => { if (currentPath !== '/') navigateTo('/') }}>Verified Reviews</a></li>
+              <li><a href="/#faq" onClick={() => { if (currentPath !== '/') navigateTo('/') }}>FAQ</a></li>
             </ul>
           </div>
 
           <div className="footer-col">
             <h4>Featured Services</h4>
             <ul>
-              <li><a href="#services">Garden &amp; Lawn Care</a></li>
-              <li><a href="#services">Irrigation Systems &amp; Audits</a></li>
-              <li><a href="#services">Drought Tolerant Design</a></li>
-              <li><a href="#services">Tree Trimming &amp; Pruning</a></li>
-              <li><a href="#services">Hardscape &amp; Lighting</a></li>
-              <li><a href="#services">HOA &amp; Commercial Care</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Garden &amp; Lawn Care</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Irrigation Systems &amp; Audits</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Drought Tolerant Design</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Tree Trimming &amp; Pruning</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>Hardscape &amp; Lighting</a></li>
+              <li><a href="/services" onClick={(e) => { e.preventDefault(); navigateTo('/services') }}>HOA &amp; Commercial Care</a></li>
             </ul>
           </div>
 
@@ -920,7 +1343,7 @@ export default function App() {
             © {new Date().getFullYear()} SoCal Landscape &amp; Gardening. All rights reserved.
           </div>
           <div>
-            <a href="#top" style={{ color: 'var(--gold)', fontWeight: '600' }}>Back to top ↑</a>
+            <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }} style={{ color: 'var(--gold)', fontWeight: '600' }}>Back to top ↑</a>
           </div>
         </div>
       </footer>
@@ -931,7 +1354,7 @@ export default function App() {
           <a href="tel:+12135667469" className="btn-secondary" style={{ padding: '10px', fontSize: '0.85rem', color: '#ffffff', borderColor: 'rgba(255,255,255,0.3)' }}>
             📞 Call
           </a>
-          <a href="#estimate" className="btn-primary" style={{ padding: '10px', fontSize: '0.85rem' }}>
+          <a href="#estimate" onClick={() => { if (currentPath !== '/') navigateTo('/') }} className="btn-primary" style={{ padding: '10px', fontSize: '0.85rem' }}>
             Get an Estimate →
           </a>
         </div>
