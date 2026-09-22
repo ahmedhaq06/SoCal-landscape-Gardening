@@ -4,6 +4,14 @@ import './App.css'
 // Real client photo gallery catalog from assets/
 const GALLERY_ITEMS = [
   {
+    id: 'turf',
+    title: 'SOD & Artificial Grass/Turf Installation',
+    category: 'Lawn & Turf Care',
+    categoryFilter: 'lawn',
+    image: '/gallery/turf.jpeg',
+    desc: 'Professional sod & artificial grass/turf installation services helping homeowners achieve healthier, more attractive outdoor spaces.'
+  },
+  {
     id: 'drought',
     title: 'Drought-Tolerant SoCal Landscape Design',
     category: 'Drought & Irrigation',
@@ -203,18 +211,18 @@ const PORTFOLIO_PROJECTS = [
     }
   },
   {
-    id: 'main-transformation-project',
+    id: 'sod-turf-project',
     category: 'residential',
-    categoryLabel: 'Residential Garden Reset',
-    title: 'Silver Lake Residential Property Reset',
-    location: 'Silver Lake, Los Angeles',
-    shortDesc: 'Organic soil enrichment, ornamental planting bed overhaul, edging precision, and ongoing garden stewardship.',
-    image: '/gallery/main.jpeg',
+    categoryLabel: 'SOD & Artificial Grass',
+    title: 'SOD & Artificial Grass/Turf Installation',
+    location: 'Los Angeles, CA',
+    shortDesc: 'Professional sod & artificial grass/turf installation services helping homeowners achieve healthier, more attractive outdoor spaces.',
+    image: '/gallery/turf.jpeg',
     specs: {
-      scope: 'Residential garden care, lawn edging, organic mulching, drip repair',
-      timeline: 'Ongoing Weekly Care',
-      keyFlora: 'Native Shrubs, Ornamental Bed Plants, Lawn Turf, Lavender',
-      result: 'A clean, vibrant property baseline that enhances everyday living.'
+      scope: 'SOD laying, artificial turf installation, soil prep, drainage base',
+      timeline: '3 Days Execution',
+      keyFlora: 'High-Density Synthetic Turf, Fresh Fescue SOD, Organic Compost Base',
+      result: 'Zero-maintenance, pristine year-round lawn with 100% water reduction.'
     }
   }
 ]
@@ -770,73 +778,75 @@ export default function App() {
            MAIN HOMEPAGE VIEW (/)
            ========================================================================== */
         <main id="top">
-          {/* 3. Hero Section using user's main.jpeg */}
-          <section className="hero-section">
-            <div className="hero-content">
-              <div className="eyebrow-badge">
-                <span>●</span> SOUTHERN CALIFORNIA LANDSCAPE STUDIO
-              </div>
-              <h1 className="hero-title">
-                Spaces that feel <br />
-                <em>alive.</em>
-              </h1>
-              <p className="hero-description">
-                Reliable garden care, drought-conscious design, and master outdoor craftsmanship for residential and commercial properties across Los Angeles.
-              </p>
-              <div className="hero-actions">
-                <a href="#estimate" className="btn-primary">
-                  <span>Start a Project</span>
-                  <span className="btn-arrow">→</span>
-                </a>
-                <a href="/gallery" onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }} className="btn-secondary">
-                  <span>View Photo Gallery</span>
-                  <span className="btn-arrow">→</span>
-                </a>
-              </div>
+          {/* 3. Hero Viewport Container (Fills screen height so trust bar sits flush at bottom) */}
+          <div className="hero-viewport-container">
+            <section className="hero-section">
+              <div className="hero-content">
+                <div className="eyebrow-badge">
+                  <span>●</span> SOUTHERN CALIFORNIA LANDSCAPE STUDIO
+                </div>
+                <h1 className="hero-title">
+                  Spaces that feel <br />
+                  <em>alive.</em>
+                </h1>
+                <p className="hero-description">
+                  Reliable garden care, drought-conscious design, and master outdoor craftsmanship for residential and commercial properties across Los Angeles.
+                </p>
+                <div className="hero-actions">
+                  <a href="#estimate" className="btn-primary">
+                    <span>Start a Project</span>
+                    <span className="btn-arrow">→</span>
+                  </a>
+                  <a href="/gallery" onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }} className="btn-secondary">
+                    <span>View Photo Gallery</span>
+                    <span className="btn-arrow">→</span>
+                  </a>
+                </div>
 
-              <div className="rating-badge">
-                <div className="rating-score">5.0</div>
-                <div>
-                  <div className="rating-stars">★★★★★</div>
-                  <div className="rating-text">92 Google Reviews · Verified LA Client Rating</div>
+                <div className="rating-badge">
+                  <div className="rating-score">5.0</div>
+                  <div>
+                    <div className="rating-stars">★★★★★</div>
+                    <div className="rating-text">92 Google Reviews · Verified LA Client Rating</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="hero-visual">
-              <div className="hero-image-wrapper">
-                <img
-                  src="/gallery/main.jpeg"
-                  alt="SoCal Landscape & Gardening featured main property transformation in Los Angeles"
-                />
+              <div className="hero-visual">
+                <div className="hero-image-wrapper">
+                  <img
+                    src="/gallery/main.jpeg"
+                    alt="SoCal Landscape & Gardening featured main property transformation in Los Angeles"
+                  />
+                </div>
+                <div className="hero-location-pill">
+                  <b>SoCal Landscape &amp; Gardening Studio</b>
+                </div>
               </div>
-              <div className="hero-location-pill">
-                <b>SoCal Landscape &amp; Gardening Studio</b>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          {/* 4. Trust Bar / Metrics */}
-          <section className="trust-bar">
-            <div className="trust-grid">
-              <div className="trust-item">
-                <div className="trust-number">5.0 ★</div>
-                <div className="trust-label">92 Verified Google Reviews</div>
+            {/* 4. Trust Bar / Metrics (Anchored flush to bottom of screen) */}
+            <section className="trust-bar">
+              <div className="trust-grid">
+                <div className="trust-item">
+                  <div className="trust-number">5.0 ★</div>
+                  <div className="trust-label">92 Verified Google Reviews</div>
+                </div>
+                <div className="trust-item">
+                  <div className="trust-number">Greater LA</div>
+                  <div className="trust-label">Silver Lake, Pasadena &amp; Surrounding Areas</div>
+                </div>
+                <div className="trust-item">
+                  <div className="trust-number">100%</div>
+                  <div className="trust-label">Climate &amp; Drought-Resilient Expertise</div>
+                </div>
+                <div className="trust-item">
+                  <div className="trust-number">24 Hours</div>
+                  <div className="trust-label">Guaranteed Estimate Response</div>
+                </div>
               </div>
-              <div className="trust-item">
-                <div className="trust-number">Greater LA</div>
-                <div className="trust-label">Silver Lake, Pasadena &amp; Surrounding Areas</div>
-              </div>
-              <div className="trust-item">
-                <div className="trust-number">100%</div>
-                <div className="trust-label">Climate &amp; Drought-Resilient Expertise</div>
-              </div>
-              <div className="trust-item">
-                <div className="trust-number">24 Hours</div>
-                <div className="trust-label">Guaranteed Estimate Response</div>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
           {/* 5. Signature Work / Portfolio Section */}
           <section className="portfolio-section" id="work">

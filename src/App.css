@@ -267,10 +267,17 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Hero Section
+   3. Hero Section & Viewport Container
    -------------------------------------------------------------------------- */
+.hero-viewport-container {
+  min-height: calc(100vh - 122px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .hero-section {
-  padding: 60px 5% 80px;
+  padding: 40px 5%;
   display: grid;
   grid-template-columns: 1fr 1.05fr;
   gap: 5%;
@@ -278,6 +285,7 @@
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  flex-grow: 1;
 }
 
 .hero-content {
@@ -1504,6 +1512,9 @@
    16. Media Queries & Responsiveness
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .hero-viewport-container {
+    min-height: auto;
+  }
   .hero-section {
     grid-template-columns: 1fr;
     gap: 48px;
