@@ -420,7 +420,7 @@ export default function App() {
       {/* Sticky Glass Navbar */}
       <header className={`main-navbar ${isScrolled ? 'scrolled' : ''}`}>
         <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="brand-logo" aria-label="SoCal Landscape & Gardening Home">
-          <div className="brand-badge">SL<span>+</span></div>
+          <img src="/logo.jpeg" alt="SoCal Landscape & Gardening Logo" className="brand-logo-img" />
           <div className="brand-text">
             <span>SoCal</span>
             <b>Landscape &amp; Gardening</b>
@@ -1353,7 +1353,7 @@ export default function App() {
         <div className="footer-wrapper">
           <div className="footer-brand">
             <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="brand-logo" style={{ color: '#ffffff' }}>
-              <div className="brand-badge">SL<span>+</span></div>
+              <img src="/logo.jpeg" alt="SoCal Landscape & Gardening Logo" className="brand-logo-img" />
               <div className="brand-text">
                 <span style={{ color: 'var(--text-light-muted)' }}>SoCal</span>
                 <b style={{ color: '#ffffff' }}>Landscape &amp; Gardening</b>
