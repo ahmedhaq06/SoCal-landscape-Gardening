@@ -99,57 +99,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   1. Announcement Notice Bar
-   -------------------------------------------------------------------------- */
-.top-notice {
-  background-color: var(--cypress);
-  color: var(--text-light);
-  padding: 10px 5%;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 101;
-}
-
-.notice-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.notice-pulse {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--clay);
-  box-shadow: 0 0 0 0 rgba(184, 92, 55, 0.7);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(184, 92, 55, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(184, 92, 55, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(184, 92, 55, 0); }
-}
-
-.notice-phone {
-  color: var(--gold);
-  font-weight: 600;
-  transition: var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.notice-phone:hover {
-  color: #ffffff;
-}
-
-/* --------------------------------------------------------------------------
-   2. Sticky Glass Navbar
+   1. Sticky Glass Navbar
    -------------------------------------------------------------------------- */
 .main-navbar {
   position: sticky;
@@ -353,10 +303,10 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Hero Section & Viewport Container
+   2. Hero Section & Viewport Container
    -------------------------------------------------------------------------- */
 .hero-viewport-container {
-  min-height: calc(100vh - 122px);
+  min-height: calc(100vh - 84px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1022,7 +972,7 @@
 /* Horizontal Line running behind circular badges */
 .process-connecting-line {
   position: absolute;
-  top: 62px;
+  top: 60px;
   left: 12%;
   right: 12%;
   height: 4px;
@@ -1044,27 +994,29 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 28px;
+  align-items: stretch;
 }
 
 .process-step-node {
   background: var(--bg-card);
-  padding: 32px 24px;
+  padding: 28px 20px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 180px;
+  transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 270px;
+  box-sizing: border-box;
 }
 
 .process-step-node:hover,
 .process-step-node.active {
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   border-color: var(--clay);
   box-shadow: 0 16px 40px rgba(184, 92, 55, 0.14);
   background: #ffffff;
@@ -1083,7 +1035,8 @@
   font-family: var(--font-serif);
   font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
@@ -1093,17 +1046,18 @@
   background: var(--clay);
   color: #ffffff;
   border-color: var(--clay);
-  transform: scale(1.15);
+  transform: scale(1.12);
   box-shadow: 0 8px 24px rgba(184, 92, 55, 0.35);
 }
 
 .process-step-title {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: var(--cypress);
-  margin-bottom: 0;
+  margin-bottom: 8px;
   transition: color 0.25s ease;
+  line-height: 1.3;
 }
 
 .process-step-node:hover .process-step-title,
@@ -1113,20 +1067,20 @@
 
 .process-step-details {
   opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  font-size: 0.88rem;
+  visibility: hidden;
+  transform: translateY(6px);
+  font-size: 0.86rem;
   color: var(--text-muted);
-  line-height: 1.6;
-  margin-top: 0;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  line-height: 1.55;
+  margin-top: 4px;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .process-step-node:hover .process-step-details,
 .process-step-node.active .process-step-details {
   opacity: 1;
-  max-height: 200px;
-  margin-top: 12px;
+  visibility: visible;
+  transform: translateY(0);
   color: var(--text-dark);
 }
 
@@ -1137,11 +1091,19 @@
   .process-nodes-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .process-step-node {
+    height: auto;
+    min-height: 230px;
+  }
 }
 
 @media (max-width: 640px) {
   .process-nodes-grid {
     grid-template-columns: 1fr;
+  }
+  .process-step-node {
+    height: auto;
+    min-height: 220px;
   }
 }
 

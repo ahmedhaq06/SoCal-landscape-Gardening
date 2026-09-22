@@ -417,18 +417,7 @@ export default function App() {
 
   return (
     <div className="site-wrapper">
-      {/* 1. Announcement Notice Bar */}
-      <aside className="top-notice">
-        <div className="notice-content">
-          <span className="notice-pulse"></span>
-          <span>Now serving homes &amp; businesses across Greater Los Angeles</span>
-        </div>
-        <a href="tel:+12135667469" className="notice-phone">
-          <span>Call Us:</span> <b>(213) 566-7469</b>
-        </a>
-      </aside>
-
-      {/* 2. Sticky Glass Navbar */}
+      {/* Sticky Glass Navbar */}
       <header className={`main-navbar ${isScrolled ? 'scrolled' : ''}`}>
         <a href="/" onClick={(e) => { e.preventDefault(); navigateTo('/') }} className="brand-logo" aria-label="SoCal Landscape & Gardening Home">
           <div className="brand-badge">SL<span>+</span></div>
