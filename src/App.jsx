@@ -311,7 +311,7 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState(null)
   const [directorySearch, setDirectorySearch] = useState('')
   const [selectedServiceForForm, setSelectedServiceForForm] = useState('')
-  
+
   // Form State
   const [formData, setFormData] = useState({
     name: '',
@@ -364,7 +364,7 @@ export default function App() {
   })
 
   // Directory services filtered by search
-  const filteredDirectoryServices = ALL_SERVICES_CATALOG.filter(service => 
+  const filteredDirectoryServices = ALL_SERVICES_CATALOG.filter(service =>
     service.title.toLowerCase().includes(directorySearch.toLowerCase()) ||
     service.description.toLowerCase().includes(directorySearch.toLowerCase())
   )
@@ -430,8 +430,8 @@ export default function App() {
           </a>
         </div>
 
-        <button 
-          className="mobile-toggle" 
+        <button
+          className="mobile-toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle Navigation Menu"
         >
@@ -488,8 +488,8 @@ export default function App() {
                   <h3 className="directory-title">Searchable Service Directory</h3>
                   <p className="directory-sub">Explore all 12 specialized services we provide across Greater Los Angeles.</p>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Search services (e.g., drip, sod, pruning)..."
                   value={directorySearch}
                   onChange={e => setDirectorySearch(e.target.value)}
@@ -515,7 +515,7 @@ export default function App() {
                       <h4 style={{ fontSize: '1.2rem', marginBottom: '8px' }}>{service.title}</h4>
                       <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>{service.description}</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => handleServiceSelect(service.title)}
                       style={{ marginTop: '20px', cursor: 'pointer' }}
                     >
@@ -593,10 +593,10 @@ export default function App() {
                   <form onSubmit={handleFormSubmit} className="form-grid">
                     <div className="form-group">
                       <label>Full Name *</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         className="form-input"
-                        placeholder="Your name" 
+                        placeholder="Your name"
                         required
                         value={formData.name}
                         onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -605,10 +605,10 @@ export default function App() {
 
                     <div className="form-group">
                       <label>Phone / WhatsApp *</label>
-                      <input 
-                        type="tel" 
+                      <input
+                        type="tel"
                         className="form-input"
-                        placeholder="(213) 000-0000" 
+                        placeholder="(213) 000-0000"
                         required
                         value={formData.phone}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -617,10 +617,10 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Email Address</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         className="form-input"
-                        placeholder="you@example.com" 
+                        placeholder="you@example.com"
                         value={formData.email}
                         onChange={e => setFormData({ ...formData, email: e.target.value })}
                       />
@@ -628,7 +628,7 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Service Needed</label>
-                      <select 
+                      <select
                         className="form-select"
                         value={formData.service || selectedServiceForForm}
                         onChange={e => setFormData({ ...formData, service: e.target.value })}
@@ -642,7 +642,7 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Property Notes</label>
-                      <textarea 
+                      <textarea
                         className="form-textarea"
                         placeholder="e.g. Garden maintenance, lawn edging, drip repairs..."
                         value={formData.notes}
@@ -671,31 +671,31 @@ export default function App() {
                 <span>←</span> Back to Home
               </a>
               <div className="filter-pills">
-                <button 
+                <button
                   className={`filter-btn ${galleryFilter === 'all' ? 'active' : ''}`}
                   onClick={() => setGalleryFilter('all')}
                 >
                   All Photos ({GALLERY_ITEMS.length})
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${galleryFilter === 'gardens' ? 'active' : ''}`}
                   onClick={() => setGalleryFilter('gardens')}
                 >
                   Garden Care
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${galleryFilter === 'lawn' ? 'active' : ''}`}
                   onClick={() => setGalleryFilter('lawn')}
                 >
                   Lawn &amp; Turf
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${galleryFilter === 'drought' ? 'active' : ''}`}
                   onClick={() => setGalleryFilter('drought')}
                 >
                   Drought &amp; Water
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${galleryFilter === 'hardscape' ? 'active' : ''}`}
                   onClick={() => setGalleryFilter('hardscape')}
                 >
@@ -716,8 +716,8 @@ export default function App() {
 
             <div className="gallery-grid">
               {filteredGalleryItems.map(item => (
-                <div 
-                  key={item.id} 
+                <div
+                  key={item.id}
                   className="gallery-card"
                   onClick={() => setSelectedGalleryImg(item)}
                 >
@@ -741,9 +741,9 @@ export default function App() {
                     <div className="eyebrow-badge">{selectedGalleryImg.category}</div>
                     <h2 className="section-title" style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{selectedGalleryImg.title}</h2>
                     <p className="section-sub" style={{ fontSize: '1rem', marginBottom: '24px' }}>{selectedGalleryImg.desc}</p>
-                    
+
                     <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                      <button 
+                      <button
                         className="btn-primary"
                         onClick={() => {
                           setSelectedGalleryImg(null)
@@ -752,7 +752,7 @@ export default function App() {
                       >
                         Request Similar Property Care →
                       </button>
-                      <button 
+                      <button
                         className="btn-secondary"
                         onClick={() => setSelectedGalleryImg(null)}
                       >
@@ -805,13 +805,12 @@ export default function App() {
 
             <div className="hero-visual">
               <div className="hero-image-wrapper">
-                <img 
-                  src="/gallery/main.jpeg" 
-                  alt="SoCal Landscape & Gardening featured main property transformation in Los Angeles" 
+                <img
+                  src="/gallery/main.jpeg"
+                  alt="SoCal Landscape & Gardening featured main property transformation in Los Angeles"
                 />
               </div>
               <div className="hero-location-pill">
-                <span>FEATURED REAL PROJECT</span>
                 <b>SoCal Landscape &amp; Gardening Studio</b>
               </div>
             </div>
@@ -851,25 +850,25 @@ export default function App() {
               </div>
 
               <div className="filter-pills">
-                <button 
+                <button
                   className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
                   onClick={() => setActiveFilter('all')}
                 >
                   All Projects
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${activeFilter === 'drought' ? 'active' : ''}`}
                   onClick={() => setActiveFilter('drought')}
                 >
                   Drought-Tolerant
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${activeFilter === 'residential' ? 'active' : ''}`}
                   onClick={() => setActiveFilter('residential')}
                 >
                   Residential Care
                 </button>
-                <button 
+                <button
                   className={`filter-btn ${activeFilter === 'hardscape' ? 'active' : ''}`}
                   onClick={() => setActiveFilter('hardscape')}
                 >
@@ -880,8 +879,8 @@ export default function App() {
 
             <div className="portfolio-grid">
               {filteredProjects.map(project => (
-                <article 
-                  key={project.id} 
+                <article
+                  key={project.id}
                   className="project-card"
                   onClick={() => setSelectedProject(project)}
                 >
@@ -906,8 +905,8 @@ export default function App() {
 
             {/* Gallery Page CTA Link */}
             <div style={{ textAlign: 'center', marginTop: '48px' }}>
-              <a 
-                href="/gallery" 
+              <a
+                href="/gallery"
                 onClick={(e) => { e.preventDefault(); navigateTo('/gallery') }}
                 className="btn-secondary"
                 style={{ padding: '16px 32px', fontSize: '0.95rem' }}
@@ -938,8 +937,8 @@ export default function App() {
                         {selectedProject.specs.result}
                       </p>
                       <div style={{ marginTop: '24px' }}>
-                        <a 
-                          href="#estimate" 
+                        <a
+                          href="#estimate"
                           className="btn-primary"
                           onClick={() => {
                             setSelectedProject(null)
@@ -1011,8 +1010,8 @@ export default function App() {
 
               {/* Dedicated Services Page Banner Button */}
               <div style={{ textAlign: 'center', marginTop: '36px' }}>
-                <a 
-                  href="/services" 
+                <a
+                  href="/services"
                   onClick={(e) => { e.preventDefault(); navigateTo('/services') }}
                   className="btn-primary"
                   style={{ padding: '16px 36px', fontSize: '0.95rem' }}
@@ -1086,15 +1085,15 @@ export default function App() {
             <div className="process-timeline-container">
               {/* Horizontal Line connecting circular step badges */}
               <div className="process-connecting-line">
-                <div 
-                  className="process-line-progress" 
+                <div
+                  className="process-line-progress"
                   style={{ width: `${(activeProcessStep / (PROCESS_STEPS.length - 1)) * 100}%` }}
                 ></div>
               </div>
 
               <div className="process-nodes-grid">
                 {PROCESS_STEPS.map((step, idx) => (
-                  <div 
+                  <div
                     key={step.num}
                     className={`process-step-node ${activeProcessStep === idx ? 'active' : ''}`}
                     onMouseEnter={() => setActiveProcessStep(idx)}
@@ -1194,11 +1193,11 @@ export default function App() {
 
             <div className="faq-list">
               {FAQS.map((faq, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`faq-item ${activeFaq === idx ? 'open' : ''}`}
                 >
-                  <button 
+                  <button
                     className="faq-question"
                     onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   >
@@ -1251,8 +1250,8 @@ export default function App() {
                     <p style={{ marginTop: '8px', fontSize: '0.95rem' }}>
                       We have received your project details. A member of our team will review your request and get back to you within 1 business day.
                     </p>
-                    <button 
-                      className="btn-primary" 
+                    <button
+                      className="btn-primary"
                       onClick={() => setFormSubmitted(false)}
                       style={{ marginTop: '20px' }}
                     >
@@ -1263,10 +1262,10 @@ export default function App() {
                   <form onSubmit={handleFormSubmit} className="form-grid">
                     <div className="form-group">
                       <label>Full Name *</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         className="form-input"
-                        placeholder="Your name" 
+                        placeholder="Your name"
                         required
                         value={formData.name}
                         onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -1275,10 +1274,10 @@ export default function App() {
 
                     <div className="form-group">
                       <label>Phone / WhatsApp *</label>
-                      <input 
-                        type="tel" 
+                      <input
+                        type="tel"
                         className="form-input"
-                        placeholder="(213) 000-0000" 
+                        placeholder="(213) 000-0000"
                         required
                         value={formData.phone}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -1287,10 +1286,10 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Email Address</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         className="form-input"
-                        placeholder="you@example.com" 
+                        placeholder="you@example.com"
                         value={formData.email}
                         onChange={e => setFormData({ ...formData, email: e.target.value })}
                       />
@@ -1298,7 +1297,7 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Service Needed</label>
-                      <select 
+                      <select
                         className="form-select"
                         value={formData.service || selectedServiceForForm}
                         onChange={e => setFormData({ ...formData, service: e.target.value })}
@@ -1312,7 +1311,7 @@ export default function App() {
 
                     <div className="form-group full">
                       <label>Property Location / Notes</label>
-                      <textarea 
+                      <textarea
                         className="form-textarea"
                         placeholder="e.g. Silver Lake residential property, garden care & drip system repair..."
                         value={formData.notes}
