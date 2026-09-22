@@ -4,6 +4,30 @@ import './App.css'
 // Real client photo gallery catalog from assets/
 const GALLERY_ITEMS = [
   {
+    id: 'drought',
+    title: 'Drought-Tolerant SoCal Landscape Design',
+    category: 'Drought & Irrigation',
+    categoryFilter: 'drought',
+    image: '/gallery/drought.jpeg',
+    desc: 'Climate-conscious native planting, decomposed granite pathways, drip irrigation lines, and water audit optimizations.'
+  },
+  {
+    id: 'outdoor-lighting',
+    title: 'Architectural Outdoor Lighting & Patio',
+    category: 'Hardscape & Lighting',
+    categoryFilter: 'hardscape',
+    image: '/gallery/outdoorLighting.jpeg',
+    desc: 'Subtle low-voltage brass lighting, custom patio stone hardscaping, and warm evening garden ambiance.'
+  },
+  {
+    id: 'hoa-maintenance',
+    title: 'HOA & Commercial Shared Grounds Care',
+    category: 'HOA & Commercial',
+    categoryFilter: 'lawn',
+    image: '/gallery/HOAMaintenance.jpeg',
+    desc: 'Dependable shared-space maintenance, hedge sculpting, pristine turf care, and clear scheduled billing.'
+  },
+  {
     id: 'main',
     title: 'Main Property Transformation',
     category: 'Garden & Hardscape',
@@ -131,66 +155,66 @@ const FEATURED_SERVICES = [
   }
 ]
 
-// Signature Selected Work Portfolio
+// Signature Selected Work Portfolio matching real client photos from assets/
 const PORTFOLIO_PROJECTS = [
   {
-    id: 'silver-lake-hillside',
+    id: 'drought-tolerant-project',
     category: 'drought',
-    categoryLabel: 'Drought-Tolerant & Lighting',
-    title: 'Silver Lake Hillside Sanctuary',
-    location: 'Silver Lake, Los Angeles',
-    shortDesc: 'A complete hillside garden reset with native agave, custom illuminated limestone steps, and drought-resilient flora.',
-    image: '/projects/hillside.jpg',
-    specs: {
-      scope: 'Hillside landscape design, stone steps, ambient lighting, native planting',
-      timeline: '3 Weeks Installation',
-      keyFlora: 'Mature Olive Trees, Agave Attenuata, Blue Fescue, Mexican Feather Grass',
-      result: '80% water reduction with dramatic evening curb appeal.'
-    }
-  },
-  {
-    id: 'silver-lake-courtyard',
-    category: 'residential',
-    categoryLabel: 'Residential Garden Care',
-    title: 'Silver Lake Private Courtyard',
-    location: 'Silver Lake, CA',
-    shortDesc: 'Mature olive tree centerpiece, custom flagstone patio, climbing Jasmine walls, and ongoing precision garden maintenance.',
-    image: '/projects/courtyard.jpg',
-    specs: {
-      scope: 'Courtyard hardscape, organic soil enrichment, drip irrigation, teak outdoor living',
-      timeline: 'Ongoing Weekly Care',
-      keyFlora: 'European Olive, Star Jasmine, Lavender, Rosemary',
-      result: 'A tranquil private sanctuary crafted for effortless outdoor dining.'
-    }
-  },
-  {
-    id: 'pasadena-estate',
-    category: 'drought',
-    categoryLabel: 'Climate-Conscious Estate',
-    title: 'Pasadena Drought-Tolerant Grounds',
+    categoryLabel: 'Drought-Tolerant & Irrigation',
+    title: 'Pasadena Climate-Resilient Grounds',
     location: 'Pasadena, CA',
-    shortDesc: 'Decomposed granite pathways, tiered natural stone retaining beds, Mediterranean lavender, and smart drip irrigation.',
-    image: '/projects/pasadena.jpg',
+    shortDesc: 'Complete drought-tolerant landscaping with native plants, decomposed granite pathways, and high-efficiency drip irrigation.',
+    image: '/gallery/drought.jpeg',
     specs: {
-      scope: 'Retaining stonework, decomposed granite paths, smart water controllers, drip lines',
-      timeline: '2 Weeks Installation',
-      keyFlora: 'Spanish Lavender, Salvia, Succulent Collections, Drought Turf',
-      result: 'Thriving year-round greenery under full Southern California sun.'
+      scope: 'Drought landscape design, native planting, smart drip lines, gravel hardscape',
+      timeline: '2 Weeks Execution',
+      keyFlora: 'California Native Salvia, Agave, Spanish Lavender, Succulent Varieties',
+      result: 'Vibrant year-round greenery with minimal water usage under full SoCal sun.'
     }
   },
   {
-    id: 'santa-monica-coastal',
+    id: 'outdoor-lighting-project',
     category: 'hardscape',
-    categoryLabel: 'Hardscape & Lighting',
-    title: 'Santa Monica Coastal Living Space',
+    categoryLabel: 'Hardscape & Outdoor Lighting',
+    title: 'Santa Monica Outdoor Lighting & Hardscape',
     location: 'Santa Monica, CA',
-    shortDesc: 'Sleek poured concrete patio, custom integrated fire hearth, architectural planters, and warm dusk lighting.',
-    image: '/projects/coastal.jpg',
+    shortDesc: 'Low-voltage brass landscape lighting setup, custom patio hardscape, and evening outdoor living atmosphere.',
+    image: '/gallery/outdoorLighting.jpeg',
     specs: {
-      scope: 'Concrete patio hardscape, fire pit installation, brass landscape lighting',
-      timeline: '4 Weeks Execution',
-      keyFlora: 'Architectural Succulents, Coastal Palms, Boxwood Accents',
-      result: 'Expanded living space with seamless indoor-to-outdoor flow.'
+      scope: 'Brass low-voltage landscape lighting, patio stone pavers, ambient tree uplighting',
+      timeline: '1 Week Installation',
+      keyFlora: 'Architectural Palms, Boxwood Hedges, Mediterranean Cypress',
+      result: 'Warm, subtle evening lighting extending outdoor garden enjoyment after dark.'
+    }
+  },
+  {
+    id: 'hoa-maintenance-project',
+    category: 'residential',
+    categoryLabel: 'HOA & Commercial Care',
+    title: 'Greater LA HOA Shared Grounds Care',
+    location: 'Greater Los Angeles, CA',
+    shortDesc: 'Dependable shared-space maintenance, hedge trimming, turf management, and structured monthly scheduling.',
+    image: '/gallery/HOAMaintenance.jpeg',
+    specs: {
+      scope: 'HOA grounds maintenance, lawn care, tree clearance, bed weeding, scheduled visits',
+      timeline: 'Ongoing Weekly Stewardship',
+      keyFlora: 'Turf Lawn, Boxwood Topiary, Shrub Borders, Flowering Perennials',
+      result: 'Immaculate, highly-maintained shared property spaces with clear crew communication.'
+    }
+  },
+  {
+    id: 'main-transformation-project',
+    category: 'residential',
+    categoryLabel: 'Residential Garden Reset',
+    title: 'Silver Lake Residential Property Reset',
+    location: 'Silver Lake, Los Angeles',
+    shortDesc: 'Organic soil enrichment, ornamental planting bed overhaul, edging precision, and ongoing garden stewardship.',
+    image: '/gallery/main.jpeg',
+    specs: {
+      scope: 'Residential garden care, lawn edging, organic mulching, drip repair',
+      timeline: 'Ongoing Weekly Care',
+      keyFlora: 'Native Shrubs, Ornamental Bed Plants, Lawn Turf, Lavender',
+      result: 'A clean, vibrant property baseline that enhances everyday living.'
     }
   }
 ]
@@ -251,12 +275,37 @@ const FAQS = [
   }
 ]
 
+// Verified Process Steps Data
+const PROCESS_STEPS = [
+  {
+    num: '01',
+    title: 'Discover & Walkthrough',
+    desc: 'Share your property details or schedule an in-person site walk. We review your priorities, light exposure, soil, and drainage.'
+  },
+  {
+    num: '02',
+    title: 'Tailored Proposal',
+    desc: 'Receive a clear, transparent estimate within one business day with plant recommendations, scope details, and schedule.'
+  },
+  {
+    num: '03',
+    title: 'Precision Execution',
+    desc: 'Our experienced crew arrives on schedule to handle planting, irrigation, hardscaping, or pruning with minimal disruption.'
+  },
+  {
+    num: '04',
+    title: 'Ongoing Care',
+    desc: 'Enjoy your vibrant outdoor space with optional recurring garden care, seasonal refreshes, and proactive property maintenance.'
+  }
+]
+
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState('all')
   const [galleryFilter, setGalleryFilter] = useState('all')
+  const [activeProcessStep, setActiveProcessStep] = useState(0)
   const [selectedProject, setSelectedProject] = useState(null)
   const [selectedGalleryImg, setSelectedGalleryImg] = useState(null)
   const [activeFaq, setActiveFaq] = useState(null)
@@ -1024,7 +1073,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 9. Process Section */}
+          {/* 9. Process Section - Connected Circular Interactive Timeline */}
           <section className="process-section" id="process">
             <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 48px auto' }}>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -1034,29 +1083,31 @@ export default function App() {
               <p className="section-sub">A simple, transparent process designed to remove friction and keep you informed at every step.</p>
             </div>
 
-            <div className="process-grid">
-              <div className="process-card">
-                <div className="process-step-badge">01</div>
-                <h3>Discover &amp; Walkthrough</h3>
-                <p>Share your property details or schedule an in-person site walk. We review your priorities, light exposure, soil, and drainage.</p>
+            <div className="process-timeline-container">
+              {/* Horizontal Line connecting circular step badges */}
+              <div className="process-connecting-line">
+                <div 
+                  className="process-line-progress" 
+                  style={{ width: `${(activeProcessStep / (PROCESS_STEPS.length - 1)) * 100}%` }}
+                ></div>
               </div>
 
-              <div className="process-card">
-                <div className="process-step-badge">02</div>
-                <h3>Tailored Proposal</h3>
-                <p>Receive a clear, transparent estimate within one business day with plant recommendations, scope details, and schedule.</p>
-              </div>
-
-              <div className="process-card">
-                <div className="process-step-badge">03</div>
-                <h3>Precision Execution</h3>
-                <p>Our experienced crew arrives on schedule to handle planting, irrigation, hardscaping, or pruning with minimal disruption.</p>
-              </div>
-
-              <div className="process-card">
-                <div className="process-step-badge">04</div>
-                <h3>Ongoing Care</h3>
-                <p>Enjoy your vibrant outdoor space with optional recurring garden care, seasonal refreshes, and proactive property maintenance.</p>
+              <div className="process-nodes-grid">
+                {PROCESS_STEPS.map((step, idx) => (
+                  <div 
+                    key={step.num}
+                    className={`process-step-node ${activeProcessStep === idx ? 'active' : ''}`}
+                    onMouseEnter={() => setActiveProcessStep(idx)}
+                    onClick={() => setActiveProcessStep(idx)}
+                  >
+                    <div className="process-circle-badge">{step.num}</div>
+                    <h3 className="process-step-title">{step.title}</h3>
+                    <p className="process-step-details">{step.desc}</p>
+                    <div className="process-hover-hint">
+                      <span>{activeProcessStep === idx ? '● Active Step' : 'Hover for details →'}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>

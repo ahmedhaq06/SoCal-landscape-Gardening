@@ -910,7 +910,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   9. Process Section
+   9. Process Section - Interactive Connected Circular Timeline
    -------------------------------------------------------------------------- */
 .process-section {
   padding: 120px 5%;
@@ -919,55 +919,148 @@
   width: 100%;
 }
 
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-top: 56px;
+.process-timeline-container {
+  position: relative;
+  margin-top: 60px;
+  padding: 10px 0;
 }
 
-.process-card {
+/* Horizontal Line running behind circular badges */
+.process-connecting-line {
+  position: absolute;
+  top: 62px;
+  left: 12%;
+  right: 12%;
+  height: 4px;
+  background: rgba(30, 54, 45, 0.15);
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.process-line-progress {
+  height: 100%;
+  background: linear-gradient(to right, var(--clay), var(--cypress));
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-nodes-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.process-step-node {
   background: var(--bg-card);
-  padding: 36px 28px;
+  padding: 32px 24px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
-  position: relative;
-  transition: all 0.3s ease;
-}
-.process-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--cypress);
-  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 260px;
 }
 
-.process-step-badge {
-  width: 48px;
-  height: 48px;
+.process-step-node:hover,
+.process-step-node.active {
+  transform: translateY(-8px);
+  border-color: var(--clay);
+  box-shadow: 0 16px 40px rgba(184, 92, 55, 0.14);
+  background: #ffffff;
+}
+
+.process-circle-badge {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: var(--clay-light);
-  color: var(--clay);
+  background: var(--bg-sand);
+  border: 2px solid var(--border-light);
+  color: var(--cypress);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 
-.process-card h3 {
+.process-step-node:hover .process-circle-badge,
+.process-step-node.active .process-circle-badge {
+  background: var(--clay);
+  color: #ffffff;
+  border-color: var(--clay);
+  transform: scale(1.15);
+  box-shadow: 0 8px 24px rgba(184, 92, 55, 0.35);
+}
+
+.process-step-title {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
+  font-weight: 500;
   color: var(--cypress);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  transition: color 0.25s ease;
 }
 
-.process-card p {
-  font-size: 0.9rem;
+.process-step-node:hover .process-step-title,
+.process-step-node.active .process-step-title {
+  color: var(--clay);
+}
+
+.process-step-details {
+  opacity: 0.45;
+  font-size: 0.88rem;
   color: var(--text-muted);
   line-height: 1.6;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.process-step-node:hover .process-step-details,
+.process-step-node.active .process-step-details {
+  opacity: 1;
+  color: var(--text-dark);
+}
+
+.process-hover-hint {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-light-muted);
+  transition: color 0.25s ease;
+}
+
+.process-step-node:hover .process-hover-hint,
+.process-step-node.active .process-hover-hint {
+  color: var(--clay);
+}
+
+@media (max-width: 1024px) {
+  .process-connecting-line {
+    display: none;
+  }
+  .process-nodes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .process-nodes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* --------------------------------------------------------------------------
    10. Social Proof & Reviews Section
